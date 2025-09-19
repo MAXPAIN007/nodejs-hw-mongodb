@@ -1,3 +1,4 @@
+import { isValidObjectId } from 'mongoose';
 import {
   getAllContacts,
   getContactById,
@@ -18,6 +19,7 @@ export const getContactsController = async (req, res, next) => {
 
 export const getContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
+  if (!isValidObjectId(contactId)) throw createHttpError(400, `Invalid Id`);
   const contact = await getContactById(contactId);
   if (!contact) throw createHttpError(404, `Contact not found`);
   res.status(200).json({
@@ -38,6 +40,7 @@ export const createContactController = async (req, res) => {
 
 export const deleteContactController = async (req, res, next) => {
   const { contactId } = req.params;
+  if (!isValidObjectId(contactId)) throw createHttpError(400, `Invalid Id`);
   const contact = await deleteContact(contactId);
   if (!contact) {
     next(createHttpError(404, 'Contact not found'));
@@ -48,18 +51,15 @@ export const deleteContactController = async (req, res, next) => {
 
 export const upsertContactController = async (req, res, next) => {
   const { contactId } = req.params;
-
+  if (!isValidObjectId(contactId)) throw createHttpError(400, `Invalid Id`);
   const result = await updateContact(contactId, req.body, {
     upsert: true,
   });
-
   if (!result) {
     next(createHttpError(404, 'Contact not found'));
     return;
   }
-
   const status = result.isNew ? 201 : 200;
-
   res.status(status).json({
     status,
     message: `Successfully upserted a contact!`,
@@ -69,6 +69,7 @@ export const upsertContactController = async (req, res, next) => {
 
 export const patchContactController = async (req, res, next) => {
   const { contactId } = req.params;
+  if (!isValidObjectId(contactId)) throw createHttpError(400, `Invalid Id`);
   const result = await updateContact(contactId, req.body);
 
   if (!result) {
