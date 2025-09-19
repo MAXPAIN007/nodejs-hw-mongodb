@@ -22,7 +22,7 @@ export const startServer = () => {
     }),
   );
 
-  app.get('/contacts', contactsRouter);
+  app.use('/contacts', contactsRouter);
 
   app.use(errorHandler);
 
