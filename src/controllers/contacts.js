@@ -1,4 +1,4 @@
-import { isValidObjectId } from 'mongoose';
+import { isValidObjectId } from 'mongoose'; //Другий варіант валідації ІД
 import {
   getAllContacts,
   getContactById,
@@ -31,7 +31,7 @@ export const getContactsController = async (req, res, next) => {
 
 export const getContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
-  if (!isValidObjectId(contactId)) throw createHttpError(400, `Invalid Id`);
+  if (!isValidObjectId(contactId)) throw createHttpError(400, `Invalid Id`); //Другий варіант валідації ІД
   const contact = await getContactById(contactId);
   if (!contact) throw createHttpError(404, `Contact not found`);
   res.status(200).json({
@@ -52,7 +52,7 @@ export const createContactController = async (req, res) => {
 
 export const deleteContactController = async (req, res, next) => {
   const { contactId } = req.params;
-  if (!isValidObjectId(contactId)) throw createHttpError(400, `Invalid Id`);
+  if (!isValidObjectId(contactId)) throw createHttpError(400, `Invalid Id`); //Другий варіант валідації ІД
   const contact = await deleteContact(contactId);
   if (!contact) {
     next(createHttpError(404, 'Contact not found'));
@@ -63,7 +63,7 @@ export const deleteContactController = async (req, res, next) => {
 
 export const upsertContactController = async (req, res, next) => {
   const { contactId } = req.params;
-  if (!isValidObjectId(contactId)) throw createHttpError(400, `Invalid Id`);
+  if (!isValidObjectId(contactId)) throw createHttpError(400, `Invalid Id`); //Другий варіант валідації ІД
   const result = await updateContact(contactId, req.body, {
     upsert: true,
   });
@@ -81,7 +81,7 @@ export const upsertContactController = async (req, res, next) => {
 
 export const patchContactController = async (req, res, next) => {
   const { contactId } = req.params;
-  if (!isValidObjectId(contactId)) throw createHttpError(400, `Invalid Id`);
+  if (!isValidObjectId(contactId)) throw createHttpError(400, `Invalid Id`); //Другий варіант валідації ІД
   const result = await updateContact(contactId, req.body);
 
   if (!result) {
