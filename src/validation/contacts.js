@@ -1,12 +1,11 @@
 import Joi from 'joi';
+import { isValidObjectId } from 'mongoose';
 
 export const createContactSchema = Joi.object({
   name: Joi.string().trim().min(3).max(20).required().label('Name').messages({
     'string.base': '{#label} should be a string. You entered "{#value}".',
-    'string.min':
-      '{#label} must have at least {#limit} characters. You entered "{#value}".',
-    'string.max':
-      '{#label} must have at most {#limit} characters. You entered "{#value}".',
+    'string.min': '{#label} must have at least {#limit} characters. You entered "{#value}".',
+    'string.max': '{#label} must have at most {#limit} characters. You entered "{#value}".',
     'any.required': '{#label} is required',
   }),
 
@@ -33,8 +32,7 @@ export const createContactSchema = Joi.object({
     .label('Email')
     .messages({
       'string.base': '{#label} should be a string. You entered "{#value}".',
-      'string.email':
-        '{#label} must be a valid email address. You entered "{#value}".',
+      'string.email': '{#label} must be a valid email address. You entered "{#value}".',
     }),
 
   isFavourite: Joi.boolean().default(false).messages({
@@ -51,15 +49,20 @@ export const createContactSchema = Joi.object({
       'any.only': '{#label} must be one of {#valids}. You entered "{#value}".',
       'any.required': '{#label} is required',
     }),
+
+  userId: Joi.string().custom((value, helper) => {
+    if (value && !isValidObjectId(value)) {
+      return helper.message('Invalid User Id');
+    }
+    return true;
+  }),
 });
 
 export const updateContactSchema = Joi.object({
   name: Joi.string().trim().min(3).max(20).label('Name').messages({
     'string.base': '{#label} should be a string. You entered "{#value}".',
-    'string.min':
-      '{#label} must have at least {#limit} characters. You entered "{#value}".',
-    'string.max':
-      '{#label} must have at most {#limit} characters. You entered "{#value}".',
+    'string.min': '{#label} must have at least {#limit} characters. You entered "{#value}".',
+    'string.max': '{#label} must have at most {#limit} characters. You entered "{#value}".',
   }),
 
   phoneNumber: Joi.string()
@@ -83,8 +86,7 @@ export const updateContactSchema = Joi.object({
     .label('Email')
     .messages({
       'string.base': '{#label} should be a string. You entered "{#value}".',
-      'string.email':
-        '{#label} must be a valid email address. You entered "{#value}".',
+      'string.email': '{#label} must be a valid email address. You entered "{#value}".',
     }),
 
   isFavourite: Joi.boolean().default(false).messages({
@@ -99,4 +101,10 @@ export const updateContactSchema = Joi.object({
       'string.base': '{#label} should be a string. You entered "{#value}".',
       'any.only': '{#label} must be one of {#valids}. You entered "{#value}".',
     }),
+  userId: Joi.string().custom((value, helper) => {
+    if (value && !isValidObjectId(value)) {
+      return helper.message('Invalid User Id');
+    }
+    return true;
+  }),
 });
