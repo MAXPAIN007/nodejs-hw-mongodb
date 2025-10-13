@@ -27,11 +27,23 @@ export const registerUserSchema = Joi.object({
 });
 
 export const loginUserSchema = Joi.object({
-  email: Joi.string().email().required().messages({
+  email: Joi.string().trim().lowercase().email().required().messages({
     'string.email': 'Invalid email address',
     'any.required': 'Email is required',
   }),
   password: Joi.string().required().messages({
     'any.required': 'Password is required',
   }),
+});
+
+export const requestResetEmailSchema = Joi.object({
+  email: Joi.string().trim().lowercase().email().required().messages({
+    'string.email': 'Invalid email address',
+    'any.required': 'Email is required',
+  }),
+});
+
+export const resetPasswordSchema = Joi.object({
+  password: Joi.string().required(),
+  token: Joi.string().required(),
 });
