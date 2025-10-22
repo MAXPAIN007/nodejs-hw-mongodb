@@ -1,0 +1,23 @@
+description: Conflict — resource already exists (Email in use)
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 409
+        message:
+          type: string
+          example: Conflict
+        data:
+          type: object
+          description: Error object produced by http-errors (may contain name, message, details, etc.)
+          additionalProperties: true
+          example:
+            name: Conflict
+            message: Email in use
